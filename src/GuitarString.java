@@ -1,3 +1,5 @@
+import gdp.stdlib.*;
+
 public class GuitarString {
 	
 	private Queue<Double> buffer;
