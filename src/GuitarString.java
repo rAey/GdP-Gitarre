@@ -1,5 +1,7 @@
-
 public class GuitarString {
+	
+	private Queue<Double> buffer;
+        private int count;
 
 	/**
 	Constructor. Create a RingBuffer of the desired capacity N (sampling rate divided by frequency, rounded to the nearest integer), and initialize it to represent a string at rest by enqueueing N zeros.
@@ -17,12 +19,39 @@ public class GuitarString {
 	Time. Return the total number of times tic() was called.
 	**/
 	
-    GuitarString(double frequency){
+    	public GuitarString(double frequency){
+                    if(frequency <= 0 || (int)(StdAudio.SAMPLE_RATE/frequency) < 2){
+                            throw new IllegalArgumentException();
+                    }
+                    count = 0;
+                    int capacity = (int)(StdAudio.SAMPLE_RATE/frequency);
+                    buffer = new LinkedList<Double>();
+                            for(int i = 0; i < capacity; i++){
+                                    buffer.add(0.0);
+                            }
+            }
+           
+            //Konstruierte Gitarre mit gegebenen Arraywerten
+            //IllegalArgumentException if < 2  
+            public GuitarString(double[] init){
+            if(init.length < 2){
+                    throw new IllegalArgumentException();
+            }
+            for(int i = 0; i < init.length; i++){
+                    buffer.add(init[i]);
+                    }
+           
+            }
     	
     }
     
 	// set the buffer to white noise
     void pluck(){
+    	for(double n : buffer){
+                            n = Math.random(); // Hier besteht noch etwas "Tuningbedarf"
+                            if(n > .5){        // Werte müssen angepasst werden
+                                    n = n-1;
+                            }
 
     }
     
@@ -38,18 +67,25 @@ public class GuitarString {
     
 	// advance the simulation one time step
     void tic(){
+    	double decay = .996;
+                    for(int i = 0; i < buffer.size(); i++){
+                            double temp = buffer.remove();
+                            double front = buffer.peek();
+                            buffer.add(decay*.5*(temp+front));
+                    }
+                    count++ ;    
 
     }
     
     // return the current sample
     double sample(){
-		return 0;
+	return buffer.peek();
     	
     }
     
 	// return number of tics
     int time(){
-		return 0;
+    	return count;
 
     }
 
