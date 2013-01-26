@@ -1,3 +1,7 @@
+import java.nio.BufferOverflowException;
+import java.nio.BufferUnderflowException;
+
+
 public class RingBuffer {
 
 private double buffer[];
@@ -31,8 +35,7 @@ boolean isFull() {
 // add item x to the end
 void enqueue(double x) {
 	if (isFull()) {
-		// TODO: Better throw exception here...
-		return;
+		throw new BufferOverflowException();
 	}
 	
 	buffer[last] = x;
@@ -46,8 +49,7 @@ void enqueue(double x) {
 // delete and return item from the front
 double dequeue() {
 	if (isEmpty()) {
-		// TODO: Better throw exception here...
-		return 0.;
+		throw new BufferUnderflowException();
 	}
 	
 	double x = buffer[first];
