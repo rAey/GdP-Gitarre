@@ -62,6 +62,10 @@ double dequeue() {
 
 // return (but do not delete) item from the front
 double peek() {
+	if (isEmpty()) {
+		throw new BufferUnderflowException();
+	}
+
 	return buffer[first];
 }
 
