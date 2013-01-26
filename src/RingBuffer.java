@@ -37,12 +37,11 @@ void enqueue(double x) {
 	if (isFull()) {
 		throw new BufferOverflowException();
 	}
-	
+
 	buffer[last] = x;
-	
-	last++;
+
 	size++;
-	if (last >= buffer.length)
+	if (++last >= buffer.length)
 		last = 0;
 }
 
@@ -51,14 +50,13 @@ double dequeue() {
 	if (isEmpty()) {
 		throw new BufferUnderflowException();
 	}
-	
+
 	double x = buffer[first];
-	
-	first++;
+
 	size--;
-	if (first >= buffer.length)
+	if (++first >= buffer.length)
 		first = 0;
-	
+
 	return x;
 }
 
