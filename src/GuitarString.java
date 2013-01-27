@@ -33,8 +33,8 @@ public class GuitarString {
                             }
             }
            
-            //Konstruierte Gitarre mit gegebenen Arraywerten
-            //IllegalArgumentException if < 2  
+            // Constructs guitar string of given frequency
+            // IllegalArgumentException if < 2  
             public GuitarString(double[] init){
             if(init.length < 2){
                     throw new IllegalArgumentException();
@@ -50,8 +50,8 @@ public class GuitarString {
 	// set the buffer to white noise
     void pluck(){
     	for(double n : buffer){
-                            n = Math.random(); // Hier besteht noch etwas "Tuningbedarf"
-                            if(n > .5){        // Werte müssen angepasst werden
+                            n = Math.random(); 
+                            if(n > .5){        
                                     n = n-1;
                             }
 
@@ -59,11 +59,15 @@ public class GuitarString {
     
 	// fill the buffer with zeros
     void mute(){
+    	
+    	// IS FOLLOWING ASAP.
 
     }
     
 	// change the length of the buffer according to the number of frets
     void pressFretDown(int fret){
+    	
+    	// ANY IDEA'S ?
     
     }
     
