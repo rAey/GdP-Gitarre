@@ -28,6 +28,10 @@ public class GuitarString {
                     }
                     count = 0;
                     int capacity = (int)(StdAudio.SAMPLE_RATE/frequency);
+                    buffer = new LinkedList<Double>();
+    	            for(int i = 0; i < capacity; i++);
+    	                    buffer.add(0.0); // void mute()
+    	            }
                     
             }
            
@@ -57,10 +61,8 @@ public class GuitarString {
     
 	// fill the buffer with zeros
     void mute(){
-    	buffer = new LinkedList<Double>();
-    	for(int i = 0; i < capacity; i++){
-    		buffer.add(0.0);
-    	}
+    	
+    	
     }
     
 	// change the length of the buffer according to the number of frets
