@@ -69,4 +69,9 @@ double peek() {
 	return buffer[first];
 }
 
+// clear the buffer, so it can be filled with new elements
+void clear() {
+	first = last = size = 0;
+}
+
 }
