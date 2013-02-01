@@ -1,6 +1,7 @@
 public class GuitarString {
     private RingBuffer ringBuffer;
     private int count;
+    private double volume;
     private double frequency ;
     private int SAMPLING_RATE = 44100 ;
 
@@ -10,6 +11,7 @@ public class GuitarString {
             throw new IllegalArgumentException();
         }
         count = 0;
+        volume = 1.0;
         int capacity = (int) (SAMPLING_RATE / frequency);
         ringBuffer = new RingBuffer(capacity);
         mute();
@@ -34,7 +36,6 @@ public class GuitarString {
         double newFrequency = frequency * Math.pow(2.0, fret / 12.0) ;
         int capacity = (int) (SAMPLING_RATE / newFrequency);
         ringBuffer = new RingBuffer(capacity) ;
-        pluck() ;
     }
 
     // advance the simulation one time step
@@ -47,10 +48,15 @@ public class GuitarString {
         ringBuffer.enqueue(a);
         count++;
     }
+    
+    // set new volume
+    public void setVolume(double vol) {
+    	volume = vol;
+    }
 
     // return the current sample
     public double sample() {
-        return ringBuffer.peek();
+        return ringBuffer.peek() * volume;
     }
     // return number of tics
     public int time() {
