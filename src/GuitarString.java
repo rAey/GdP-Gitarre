@@ -69,6 +69,7 @@ public class GuitarString {
     void pressFretDown(int fret){
     	
     	// ANY IDEA'S ?
+    	//newFrequency = openStringFrequency * Math.pow(2.0, fret / 12.0);
     
     }
     
