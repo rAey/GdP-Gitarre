@@ -1,4 +1,3 @@
-
 public class Guitar {
 
 	/**
@@ -116,7 +115,43 @@ public class Guitar {
     }
     
     double sample(){
-		return 0;
+		//by superposition priciple it just adds all frequences to a sum
+		return(strE+strA+strD+strB+strE+stre);
+		//by logic it should be the average, shouldnt it?
+		/*
+			double ave = 0;
+			int count = 0;
+			if(strE != 0) 
+			{
+				ave += strE; 
+				count++;
+			}
+				if(strA != 0) 
+			{
+				ave += strA; 
+				count++;
+			}
+				if(strD != 0) 
+			{
+				ave += strD; 
+				count++;
+			}
+				if(strG != 0) 
+			{
+				ave += strG; 
+				count++;
+			}
+				if(strB != 0) 
+			{
+				ave += strB; 
+				count++;
+			}
+				if(stre != 0) 
+			{
+				ave += stre; 
+				count++;
+			}
+			return(ave/count);
 	  // compute a sample of the guitar output
     }
 	
