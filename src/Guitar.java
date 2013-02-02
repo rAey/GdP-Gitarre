@@ -115,8 +115,7 @@ public class Guitar {
     }
     
     double sample(){
-		//by superposition priciple it just adds all frequences to a sum
-		return(strE+strA+strD+strB+strE+stre);
+		
 		//by logic it should be the average, shouldnt it?
 		/*
 			double ave = 0;
