@@ -117,7 +117,6 @@ public class Guitar {
     double sample(){
 		
 		//by logic it should be the average, shouldnt it?
-		/*
 			double ave = 0;
 			int count = 0;
 			if(strE != 0) 
