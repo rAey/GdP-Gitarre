@@ -126,27 +126,27 @@ public class Guitar {
 				ave += strE; 
 				count++;
 			}
-				if(strA != 0) 
+			if(strA != 0) 
 			{
 				ave += strA; 
 				count++;
 			}
-				if(strD != 0) 
+			if(strD != 0) 
 			{
 				ave += strD; 
 				count++;
 			}
-				if(strG != 0) 
+			if(strG != 0) 
 			{
 				ave += strG; 
 				count++;
 			}
-				if(strB != 0) 
+			if(strB != 0) 
 			{
 				ave += strB; 
 				count++;
 			}
-				if(stre != 0) 
+			if(stre != 0) 
 			{
 				ave += stre; 
 				count++;
