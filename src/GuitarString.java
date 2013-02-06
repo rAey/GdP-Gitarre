@@ -7,12 +7,9 @@ public class GuitarString {
 
     public GuitarString(double f) {
         frequency = f ; 
-        if (frequency <= 0 || (int) (SAMPLING_RATE / frequency) < 2) {
-            throw new IllegalArgumentException();
-        }
         count = 0;
         volume = 1.0;
-        int capacity = (int) (SAMPLING_RATE / frequency);
+        int capacity = (int)Math.round(SAMPLING_RATE / frequency);
         ringBuffer = new RingBuffer(capacity);
         mute();
     }
@@ -34,7 +31,7 @@ public class GuitarString {
     // change the length of the buffer according to the number of frets
     void pressFretDown(int fret) {
         double newFrequency = frequency * Math.pow(2.0, fret / 12.0) ;
-        int capacity = (int) (SAMPLING_RATE / newFrequency);
+		int capacity = (int)Math.round(SAMPLING_RATE / newFrequency);
         ringBuffer = new RingBuffer(capacity) ;
     }
 
