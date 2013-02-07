@@ -14,6 +14,7 @@ public class GuitarParser {
 private static final String STR_PLAYERNAME = "Super cool and funky guitar player by Wurstfachverkäuferin";
 private static final String STR_GENERATING = "Generating waveform, please stand by...";
 private static final String STR_PLAYING    = "Now playing, please enjoy... :)";
+private static final String STR_TIME       = "Total play time: ";
 
 private static final String HDR_ARTIST  = "artist: ";
 private static final String HDR_TITLE   = "title: ";
@@ -22,7 +23,7 @@ private static final String HDR_SPEED   = "speed: ";
 private static final String HDR_TRACKS  = "tracks: ";
 private static final String COMMENT     = "//";
 
-private static final int BASE_STEP = 60 * 44100;    // 60sec * SAMPLING_RATE
+private static final int SAMPLING_RATE = 44100;
 
 private static String artist = "$artist";     // Artist name
 private static String title  = "$title";      // Song title
@@ -48,7 +49,7 @@ public static void main(String args[])
 	// Generate waveform for output
 	System.out.println(STR_GENERATING);
 	ArrayList<Double> wave = new ArrayList<Double>();
-	int step = (int)((BASE_STEP/bpm) * (4.0/speed));
+	int step = (int)((60.0*SAMPLING_RATE/bpm) * (4.0/speed));
 	while (parseNotes()) {
 		for (int i = 0; i < step; ++i)
 			wave.add(playNotes());
@@ -60,10 +61,12 @@ public static void main(String args[])
 	if (args.length == 0) {
 		// Play waveform
 		System.out.println(STR_PLAYING);
+		printTime(wave_array.length);
 		StdAudio.play(wave_array);
 	} else {
 		// Save waveform to file
 		System.out.println("Saving to " + args[0] + "...");
+		printTime(wave_array.length);
 		StdAudio.save(args[0], wave_array);
 	}
 
@@ -163,6 +166,19 @@ private static void printLogo()
 	for (int i = 0; i < STR_PLAYERNAME.length(); ++i)
 		System.out.print("-");
 	System.out.println();
+}
+
+// Output play time.
+private static void printTime(int samples)
+{
+	int sec = samples / SAMPLING_RATE;
+	int min = 0;
+	while (sec - 60 >= 0) {
+		sec -= 60;
+		++min;
+	}
+	System.out.print(STR_TIME);
+	System.out.println(min + ":" + sec);
 }
 
 }
