@@ -1,63 +1,105 @@
 public class GuitarString {
-    private RingBuffer ringBuffer;
-    private int count;
-    private double volume;
-    private double frequency ;
-    private int SAMPLING_RATE = 44100 ;
 
-    public GuitarString(double f) {
-        frequency = f ; 
-        count = 0;
-        volume = 1.0;
-        int capacity = (int)Math.round(SAMPLING_RATE / frequency);
-        ringBuffer = new RingBuffer(capacity);
-        mute();
-    }
-    
-    // set the buffer to white noise
-    void pluck() {
-        ringBuffer.clear();
-        while (!ringBuffer.isFull())
-            ringBuffer.enqueue(Math.random() - 0.5);
-    }
+static final int SAMPLING_RATE = 44100;
 
-    // fill the buffer with zeros
-    public void mute() {
-    	ringBuffer.clear();
-        while (!ringBuffer.isFull())
-            ringBuffer.enqueue(0.0); // void mute()
-    }
+private RingBuffer buffer;
+private int        count;
+private double     frequency, volume;
 
-    // change the length of the buffer according to the number of frets
-    void pressFretDown(int fret) {
-        double newFrequency = frequency * Math.pow(2.0, fret / 12.0) ;
-		int capacity = (int)Math.round(SAMPLING_RATE / newFrequency);
-        ringBuffer = new RingBuffer(capacity) ;
-		mute();
-    }
+/*
+ * GuitarString
+ *	Model of a vibrating guitar string of a given frequency.
+ */
+GuitarString(double freq)
+{
+	frequency = freq;
+	count = 0;
+	volume = 1.0;
+	int capacity = (int)Math.round(SAMPLING_RATE / frequency);
+	buffer = new RingBuffer(capacity);
+	mute();
+}
 
-    // advance the simulation one time step
-    void tic() {
-        double a = ringBuffer.dequeue();
-        double b = ringBuffer.peek();
-        a = (a+b) / 2;
-        a *= 0.996;
+/*
+ * pluck()
+ *	Replace the N elements in the buffer with N random values
+ *	between -0.5 and +0.5.
+ */
+void pluck()
+{
+	buffer.clear();
+	while (!buffer.isFull())
+		buffer.enqueue(Math.random() - 0.5);
+}
 
-        ringBuffer.enqueue(a);
-        count++;
-    }
-    
-    // set new volume
-    public void setVolume(double vol) {
-    	volume = vol;
-    }
+/*
+ * mute()
+ *	Replace the N elements in the buffer with zeros.
+ */
+void mute()
+{
+	buffer.clear();
+	while (!buffer.isFull())
+		buffer.enqueue(0.0);
+}
 
-    // return the current sample
-    public double sample() {
-        return ringBuffer.peek() * volume;
-    }
-    // return number of tics
-    public int time() {
-        return count;
-    }
+/*
+ * pressFretDown()
+ *	Change the buffer length as if the string frequency would have
+ *	changed.
+ */
+void pressFretDown(int fret)
+{
+	double newFrequency = frequency * Math.pow(2.0, fret / 12.0);
+	int capacity = (int)Math.round(SAMPLING_RATE / newFrequency);
+	buffer = new RingBuffer(capacity);
+	mute();
+}
+
+/*
+ * tic()
+ *	Apply the Karplus-Strong update: delete the sample at the front of
+ *	the buffer and add to the end of the buffer the average of the first
+ *	two samples, multiplied by the energy decay factor.
+ */
+void tic()
+{
+	double a = buffer.dequeue();
+	double b = buffer.peek();
+	a = (a+b) / 2;
+	a *= 0.996;
+	buffer.enqueue(a);
+	count++;
+}
+
+/*
+ * setVolume()
+ *	Set the volume of the guitar string.
+ */
+void setVolume(double vol)
+{
+	volume = vol;
+}
+
+/*
+ * sample()
+ *	Sample the guitar string.
+ * Return:
+ *	The item at the front of the buffer.
+ */
+double sample()
+{
+	return buffer.peek() * volume;
+}
+
+/*
+ * time()
+ * Return:
+ *	The total number of times tic() was called.
+ */
+int time()
+{
+	return count;
+}
+
 }

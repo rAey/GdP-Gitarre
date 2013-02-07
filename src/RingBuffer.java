@@ -1,26 +1,37 @@
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
 
-
 public class RingBuffer {
 
 private double buffer[];
 private int first, last, size;
 
-// constructor to create an empty buffer, with given max capacity
+/*
+ * RingBuffer
+ *	A simple ring buffer of a given capacity containing doubles.
+ */
 RingBuffer(int capacity)
 {
 	buffer = new double[capacity];
 	first = last = size = 0;
 }
 
-// return number of items currently in the buffer
+/*
+ * size()
+ * Return:
+ *	Number of items currently in the buffer.
+ */
 int size()
 {
 	return size;
 }
 
-// is the buffer empty (size equals zero)?
+/*
+ * isEmpty()
+ *	Is the buffer empty?
+ * Return:
+ *	true, if empty, else false.
+ */
 boolean isEmpty()
 {
 	if (size <= 0)
@@ -28,7 +39,12 @@ boolean isEmpty()
 	return false;
 }
 
-// is the buffer full  (size equals capacity)?
+/*
+ * isFull()
+ *	Is the buffer full?
+ * Return:
+ *	true, if full, else false.
+ */
 boolean isFull()
 {
 	if (size >= buffer.length)
@@ -36,7 +52,10 @@ boolean isFull()
 	return false;
 }
 
-// add item x to the end
+/*
+ * enqueue()
+ *	Add an item to the end of the buffer.
+ */
 void enqueue(double x)
 {
 	if (isFull())
@@ -48,7 +67,12 @@ void enqueue(double x)
 		last = 0;
 }
 
-// delete and return item from the front
+/*
+ * dequeue()
+ *	Delete and return item from the front.
+ * Return:
+ *	Item from the front of the buffer.
+ */
 double dequeue()
 {
 	if (isEmpty())
@@ -61,7 +85,11 @@ double dequeue()
 	return x;
 }
 
-// return (but do not delete) item from the front
+/*
+ * peek()
+ * Return:
+ *	Item from the front of the buffer.
+ */
 double peek()
 {
 	if (isEmpty())
@@ -70,7 +98,11 @@ double peek()
 	return buffer[first];
 }
 
-// clear the buffer, so it can be filled with new elements
+/*
+ * clear()
+ *	Reset the buffer to an empty state, so it can be filled with new
+ *	values.
+ */
 void clear()
 {
 	first = last = size = 0;

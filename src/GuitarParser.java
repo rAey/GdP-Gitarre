@@ -1,47 +1,46 @@
-/*
- * GuitarParser.java -
- *     Play a song: "java GuitarParser < path_to_song.gp"
- *     Save a song to a wav file: "java GuitarParser song.wav < path_to_song.gp"
- *     Save a song to a au file: "java GuitarParser song.au < path_to_song.gp"
- *
- *     Look at the examples for the song format...
- */
 import java.util.ArrayList;
 
-public class GuitarParser {
+class GuitarParser {
 
+static final String STR_PLAYERNAME = "Super cool and funky guitar player by Wurstfachverkäuferin";
+static final String STR_GENERATING = "Generating waveform, please stand by...";
+static final String STR_PLAYING    = "Now playing, please enjoy... :)";
+static final String STR_TIME       = "Total play time: ";
 
-private static final String STR_PLAYERNAME = "Super cool and funky guitar player by Wurstfachverkäuferin";
-private static final String STR_GENERATING = "Generating waveform, please stand by...";
-private static final String STR_PLAYING    = "Now playing, please enjoy... :)";
-private static final String STR_TIME       = "Total play time: ";
+static final String HDR_ARTIST = "artist: ";
+static final String HDR_TITLE  = "title: ";
+static final String HDR_BPM    = "bpm: ";
+static final String HDR_SPEED  = "speed: ";
+static final String HDR_TRACKS = "tracks: ";
+static final String COMMENT    = "//";
 
-private static final String HDR_ARTIST  = "artist: ";
-private static final String HDR_TITLE   = "title: ";
-private static final String HDR_BPM     = "bpm: ";
-private static final String HDR_SPEED   = "speed: ";
-private static final String HDR_TRACKS  = "tracks: ";
-private static final String COMMENT     = "//";
+static final int SAMPLING_RATE = 44100;
 
-private static final int SAMPLING_RATE = 44100;
+static String artist = "$artist";     // Artist name
+static String title  = "$title";      // Song title
+static int    bpm    = 120;           // Song BPM
+static int    speed  = 4;             // Song speed (length of one line)
+static int    tracks = 1;             // # of Tracks
 
-private static String artist = "$artist";     // Artist name
-private static String title  = "$title";      // Song title
-private static int    bpm    = 120;           // Song BPM
-private static int    speed  = 4;             // Song speed (length of one line)
-private static int    tracks = 1;             // # of Tracks
+static GuitarString strings[];
 
-private static GuitarString strings[];
-
-
-// Super cool and funky guitar player.
+/*
+ * GuitarParser
+ *	Read a song from a .gp file and play or save it to disk.
+ *
+ *	Play a song: "java GuitarParser < path_to_song.gp"
+ *	Save a song to a wav file: "java GuitarParser song.wav < path_to_song.gp"
+ *	Save a song to a au file: "java GuitarParser song.au < path_to_song.gp"
+ *
+ *	Look at the examples for the song format...
+ */
 public static void main(String args[])
 {
 	parseHeader();
 	printLogo();
 	printSongInfo();
 
-	// Initialize guitar strings
+	// Initialize guitar strings (one GuitarString per track)
 	strings = new GuitarString[tracks];
 	for (int i = 0; i < tracks; ++i)
 		strings[i] = new GuitarString(440);
@@ -73,8 +72,11 @@ public static void main(String args[])
 	System.exit(0);
 }
 
-// Parse the metadata of the song.
-private static void parseHeader()
+/*
+ * parseHeader()
+ *	Parse the metadata of the song.
+ */
+static void parseHeader()
 {
 	String ln;
 	while (!(ln = StdIn.readLine()).equals("")) {
@@ -91,9 +93,14 @@ private static void parseHeader()
 	}
 }
 
-// Parse one line of notes.
-// Return false, if there is no more note data.
-private static boolean parseNotes()
+/*
+ * parseNotes()
+ *	Parse one line of notes and update the volume and frequency of each
+ *	GuitarString.
+ * Return:
+ *	false, if there is are no more lines, else true.
+ */
+static boolean parseNotes()
 {
 	if (StdIn.isEmpty())
 		return false;
@@ -116,16 +123,30 @@ private static boolean parseNotes()
 			// Transpose relative to A
 			int trans = 0;
 			switch (Character.toUpperCase(note[1])) {
-				case 'C': trans -= 9; break;
-				case 'D': trans -= 7; break;
-				case 'E': trans -= 5; break;
-				case 'F': trans -= 4; break;
-				case 'G': trans -= 2; break;
-				case 'B': trans += 2; break;
+			case 'C':
+				trans -= 9;
+				break;
+			case 'D':
+				trans -= 7;
+				break;
+			case 'E':
+				trans -= 5;
+				break;
+			case 'F':
+				trans -= 4;
+				break;
+			case 'G':
+				trans -= 2;
+				break;
+			case 'B':
+				trans += 2;
 			}
 			switch (note[0]) {
-				case '#': ++trans; break;
-				case 'b': --trans; break;
+			case '#':
+				++trans;
+				break;
+			case 'b':
+				--trans;
 			}
 			trans += (Character.getNumericValue(note[2])-3) * 12;
 
@@ -137,8 +158,13 @@ private static boolean parseNotes()
 	return true;
 }
 
-// Play the parsed notes and return a single sample.
-private static Double playNotes()
+/*
+ * playNotes()
+ *	Play the current line of notes.
+ * Return:
+ *	Sample of all GuitarStrings.
+ */
+static Double playNotes()
 {
 	double sample = 0;
 	for (int i = 0; i < tracks; ++i) {
@@ -148,16 +174,22 @@ private static Double playNotes()
 	return new Double(sample);
 }
 
-// Print the metadata of the song.
-private static void printSongInfo()
+/*
+ * printSongInfo()
+ *	Print the song metadata.
+ */
+static void printSongInfo()
 {
 	System.out.println(artist + " - " + title
 		+ " // " + bpm + " BPM, " + speed + " // " + tracks + " Tracks");
 	System.out.println();
 }
 
-// Print a little logo.
-private static void printLogo()
+/*
+ * printLogo()
+ *	Print a little header.
+ */
+static void printLogo()
 {
 	for (int i = 0; i < STR_PLAYERNAME.length(); ++i)
 		System.out.print("-");
@@ -168,8 +200,11 @@ private static void printLogo()
 	System.out.println();
 }
 
-// Output play time.
-private static void printTime(int samples)
+/*
+ * printTime()
+ *	Print the total length of the song.
+ */
+static void printTime(int samples)
 {
 	int sec = samples / SAMPLING_RATE;
 	int min = 0;
