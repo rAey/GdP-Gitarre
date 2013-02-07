@@ -2,6 +2,7 @@
  * GuitarParser.java -
  *     Play a song: "java GuitarParser < path_to_song.gp"
  *     Save a song to a wav file: "java GuitarParser song.wav < path_to_song.gp"
+ *     Save a song to a au file: "java GuitarParser song.au < path_to_song.gp"
  *
  *     Look at the examples for the song format...
  */
@@ -63,7 +64,7 @@ public static void main(String args[])
 	} else {
 		// Save waveform to file
 		System.out.println("Saving to " + args[0] + "...");
-		StdAudio.save(wave_array, args[0]);
+		StdAudio.save(args[0], wave_array);
 	}
 
 	System.exit(0);
