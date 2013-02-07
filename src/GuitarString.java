@@ -33,6 +33,7 @@ public class GuitarString {
         double newFrequency = frequency * Math.pow(2.0, fret / 12.0) ;
 		int capacity = (int)Math.round(SAMPLING_RATE / newFrequency);
         ringBuffer = new RingBuffer(capacity) ;
+		mute();
     }
 
     // advance the simulation one time step
