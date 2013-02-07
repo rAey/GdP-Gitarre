@@ -1,1 +1,13 @@
-TODO: Readme schreiben, wie in der Aufgabenstellung gefordert...
+Aufgabe 3: Gitarre
+Gruppe: 3Wurstfachverkäuferin
+
+Neben den 3 Grundklassen (RingBuffer, GuitarString, Guitar), haben wir
+die Erweiterungen 3 (Lautstärke) und 7 (Dateien abspielen) implementiert.
+Die Testklase (GuitarPlayerTest) wurde um Lautstärkeregelung erweitert.
+
+Der GuitarParser wird wie folgt aufgerufen:
+	$ cd src/
+	$ javac GuitarParser.java
+	$ java GuitarParser < ../songs/monkey.gp
+Oder falls in eine Datei gespeichert werden soll:
+	$ java GuitarParser file.au < ../songs/monkey.gp
