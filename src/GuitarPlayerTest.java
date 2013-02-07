@@ -1,11 +1,8 @@
-
 /******************************************************************************
  *  Compilation:  javac GuitarPlayer.java
  *  Execution:    java  GuitarPlayer
  *
  ******************************************************************************/
-import gdp.stdlib.StdAudio;
-import gdp.stdlib.StdDraw;
 import java.awt.Font;
 
 public class GuitarPlayerTest {
