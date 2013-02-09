@@ -47,11 +47,12 @@ public static void main(String args[])
 
 	// Generate waveform for output
 	System.out.println(STR_GENERATING);
-	ArrayList<Double> wave = new ArrayList<Double>();
 	int step = (int)((60.0*SAMPLING_RATE/bpm) * (4.0/speed));
+	ArrayList<Double> wave = new ArrayList<Double>(step);
 	while (parseNotes()) {
 		for (int i = 0; i < step; ++i)
 			wave.add(playNotes());
+		wave.ensureCapacity(wave.size() + step);
 	}
 	double wave_array[] = new double[wave.size()];
 	for (int i = 0; i < wave.size(); ++i)
